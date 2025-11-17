@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
-import "./GetStarted.css";
-// GetStarted Component
+import styles from "./GetStarted.module.css"; // ⬅️ updated
+
 const GetStarted = () => {
   const navigate = useNavigate();
 
@@ -9,9 +9,9 @@ const GetStarted = () => {
   };
 
   return (
-    <div className="get-started-section">
-      <div className="get-started-card">
-        <div className="growth-icon">
+    <div className={styles["get-started-section"]}>
+      <div className={styles["get-started-card"]}>
+        <div className={styles["growth-icon"]}>
           <svg width="48" height="48" viewBox="0 0 24 24" fill="white">
             <path d="M3 18v-6a9 9 0 0 1 18 0v6" />
             <path
@@ -21,16 +21,18 @@ const GetStarted = () => {
           </svg>
         </div>
 
-        <h2 className="get-started-title">
+        <h2 className={styles["get-started-title"]}>
           Invest in long terms portfolios to grow your wealth
         </h2>
 
-        <p className="get-started-requirement">Requires Min ₹50,000</p>
+        <p className={styles["get-started-requirement"]}>
+          Requires Min ₹50,000
+        </p>
 
-        <ul className="benefits-list">
-          <li className="benefit-item">
+        <ul className={styles["benefits-list"]}>
+          <li className={styles["benefit-item"]}>
             <svg
-              className="check-icon"
+              className={styles["check-icon"]}
               width="24"
               height="24"
               viewBox="0 0 24 24"
@@ -47,9 +49,10 @@ const GetStarted = () => {
             </svg>
             <span>Managed by experts</span>
           </li>
-          <li className="benefit-item">
+
+          <li className={styles["benefit-item"]}>
             <svg
-              className="check-icon"
+              className={styles["check-icon"]}
               width="24"
               height="24"
               viewBox="0 0 24 24"
@@ -66,9 +69,10 @@ const GetStarted = () => {
             </svg>
             <span>Managed by experts</span>
           </li>
-          <li className="benefit-item">
+
+          <li className={styles["benefit-item"]}>
             <svg
-              className="check-icon"
+              className={styles["check-icon"]}
               width="24"
               height="24"
               viewBox="0 0 24 24"
@@ -87,7 +91,7 @@ const GetStarted = () => {
           </li>
         </ul>
 
-        <button className="start-button" onClick={() => handleContinue()}>
+        <button className={styles["start-button"]} onClick={handleContinue}>
           Get started
           <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
             <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z" />

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import "./ContactDetails.css";
+import styles from "./ContactDetails.module.css";
 import { useNavigate } from "react-router-dom";
 
 const ContactDetails = () => {
@@ -13,29 +13,29 @@ const ContactDetails = () => {
   const handleSendOTP = () => {
     if (phoneNumber.trim()) {
       console.log("Sending OTP to:", phoneNumber);
-      // Handle OTP sending logic
-      navigate("/verification");
+      navigate("/verification", { replace: true });
     }
   };
 
   const handlePhoneChange = (e) => {
     const value = e.target.value;
-    // Only allow numbers
     if (value === "" || /^[0-9]+$/.test(value)) {
       setPhoneNumber(value);
     }
   };
 
   return (
-    <div className="contact-details-section">
-      <div className="contact-header">
-        <button className="back-btn" onClick={() => handleBack()}>
+    <div className={styles["contact-details-section"]}>
+      <div className={styles["contact-header"]}>
+        <button className={styles["back-btn"]} onClick={handleBack}>
           <svg width="24" height="24" viewBox="0 0 24 24" fill="white">
             <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z" />
           </svg>
         </button>
-        <span className="step-text">Step 2 of 4</span>
-        <button className="help-btn">
+
+        <span className={styles["step-text"]}>Step 2 of 4</span>
+
+        <button className={styles["help-btn"]}>
           <svg
             width="20"
             height="20"
@@ -50,34 +50,44 @@ const ContactDetails = () => {
         </button>
       </div>
 
-      <div className="contact-form-container">
-        <h2 className="contact-title">Enter your contact details</h2>
-        <p className="contact-subtitle">Receive a reminder before the call</p>
+      <div className={styles["contact-form-container"]}>
+        <h2 className={styles["contact-title"]}>Enter your contact details</h2>
+        <p className={styles["contact-subtitle"]}>
+          Receive a reminder before the call
+        </p>
 
-        <div className="phone-input-wrapper">
-          <label className="input-label">Phone Number</label>
-          <div className="phone-input-group">
-            <span className="country-code">+91</span>
+        <div className={styles["phone-input-wrapper"]}>
+          <label className={styles["input-label"]}>Phone Number</label>
+
+          <div className={styles["phone-input-group"]}>
+            <span className={styles["country-code"]}>+91</span>
+
             <input
               type="tel"
-              className="phone-input"
+              className={styles["phone-input"]}
               value={phoneNumber}
               onChange={handlePhoneChange}
               maxLength="10"
               placeholder="Enter phone number"
+              onKeyDown={(e) => {
+                if (e.key === "Enter" && phoneNumber.length === 10)
+                  handleSendOTP();
+              }}
             />
           </div>
         </div>
 
         <button
-          className={`otp-button ${phoneNumber.length === 10 ? "active" : ""}`}
+          className={`${styles["otp-button"]} ${
+            phoneNumber.length === 10 ? styles.active : ""
+          }`}
           onClick={handleSendOTP}
           disabled={phoneNumber.length !== 10}
         >
           Send OTP
         </button>
 
-        <div className="contact-footer">
+        <div className={styles["contact-footer"]}>
           <svg
             width="16"
             height="16"
@@ -89,7 +99,10 @@ const ContactDetails = () => {
             <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
             <path d="M7 11V7a5 5 0 0 1 10 0v4" />
           </svg>
-          <span className="footer-text">Your data is 100% protected</span>
+
+          <span className={styles["footer-text"]}>
+            Your data is 100% protected
+          </span>
         </div>
       </div>
     </div>

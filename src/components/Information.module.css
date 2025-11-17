@@ -29,6 +29,9 @@ body {
   height: 64px;
   position: relative;
   margin-bottom: 40px;
+  opacity: 0;
+  transform: translateY(10px);
+  animation: fadeIn 0.8s ease-out 0.7s forwards;
 }
 
 .profile-img {

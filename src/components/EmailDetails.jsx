@@ -1,10 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { ChevronLeft, MessageCircle } from "lucide-react";
-import "./EmailDetails.css";
+import styles from "./EmailDetails.module.css"; // ⬅️ updated
 import { useNavigate } from "react-router-dom";
 import { DetailsContext } from "./contexts/Details";
-import { useContext } from "react";
-import { time } from "framer-motion";
 
 const EmailDetails = ({ onBack }) => {
   const { data, setData } = useContext(DetailsContext);
@@ -23,7 +21,6 @@ const EmailDetails = ({ onBack }) => {
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
   };
 
-  // Check if required fields are filled (only email is required now)
   useEffect(() => {
     const isEmailValid = validateEmail(formData.email);
     setIsFormValid(isEmailValid);
@@ -40,7 +37,6 @@ const EmailDetails = ({ onBack }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (isFormValid) {
-      console.log("Form submitted:", formData);
       setData((prev) => ({
         ...prev,
         email: formData.email,
@@ -51,56 +47,62 @@ const EmailDetails = ({ onBack }) => {
   };
 
   return (
-    <div className="email-container">
+    <div className={styles["email-container"]}>
       {/* Header */}
-      <div className="email-header">
-        <button className="back-btn" onClick={onBack}>
+      <div className={styles["email-header"]}>
+        <button
+          className={styles["back-btn"]}
+          onClick={() => navigate("/scheduleCall")}
+        >
           <ChevronLeft size={24} />
         </button>
-        <h1 className="email-title">
+
+        <h1 className={styles["email-title"]}>
           Confirm your details to schedule the expert call
         </h1>
-        <button className="help-btn">
+
+        <button className={styles["help-btn"]}>
           <MessageCircle size={20} />
           <span>Help</span>
         </button>
       </div>
 
       {/* Form Section */}
-      <form onSubmit={handleSubmit} className="email-form">
-        {/* Email Fields Row */}
-        <div className="email-inputs-row">
-          <div className="form-group">
+      <form onSubmit={handleSubmit} className={styles["email-form"]}>
+        {/* Email Input Row */}
+        <div className={styles["email-inputs-row"]}>
+          <div className={styles["form-group"]}>
             <input
               type="email"
               name="email"
               placeholder="Enter your email ID"
               value={formData.email}
               onChange={handleChange}
-              className="form-input"
+              className={styles["form-input"]}
               required
             />
           </div>
-          <div className="form-group">
+
+          <div className={styles["form-group"]}>
             <input
               type="email"
               name="guestEmail"
               placeholder="Guest email ID (optional)"
               value={formData.guestEmail}
               onChange={handleChange}
-              className="form-input"
+              className={styles["form-input"]}
             />
           </div>
         </div>
 
         {/* Message Field */}
-        <div className="form-group">
+        <div className={styles["form-group"]}>
           <textarea
             name="message"
-            placeholder="Anything specific you'd like to discuss? e.g, Help me with retirement solutions (optional)"
+            placeholder="Anything specific you'd like to discuss? e.g., Help me with retirement solutions (optional)"
             value={formData.message}
             onChange={handleChange}
-            className="form-textarea"
+            className={styles["form-textarea"]}
             rows="6"
           />
         </div>
@@ -108,11 +110,13 @@ const EmailDetails = ({ onBack }) => {
         {/* Submit Button */}
         <button
           type="submit"
-          className={`submit-btn ${isFormValid ? "active" : "inactive"}`}
+          className={`${styles["submit-btn"]} ${
+            isFormValid ? styles["active"] : styles["inactive"]
+          }`}
           disabled={!isFormValid}
         >
           Submit
-          <span className="arrow">→</span>
+          <span className={styles["arrow"]}>→</span>
         </button>
       </form>
     </div>

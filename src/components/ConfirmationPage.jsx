@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import {
   CheckCircle,
   Calendar,
@@ -7,22 +7,20 @@ import {
   Users,
   ArrowRight,
 } from "lucide-react";
-import "./ConfirmationPage.css";
+
+import styles from "./ConfirmationPage.module.css"; // ⬅️ updated
 import { useNavigate } from "react-router-dom";
-import { useContext } from "react";
 import { DetailsContext } from "./contexts/Details";
 
 const ConfirmationPage = () => {
   const [showContent, setShowContent] = useState(false);
   const navigate = useNavigate();
-  const { data, setData } = useContext(DetailsContext);
+  const { data } = useContext(DetailsContext);
 
   useEffect(() => {
-    // Trigger animation after component mounts
     setTimeout(() => setShowContent(true), 100);
   }, []);
 
-  // Mock data - replace with actual data from your state/props
   const appointmentDetails = {
     date: data.date,
     time: data.time,
@@ -32,64 +30,67 @@ const ConfirmationPage = () => {
     timezone: "Indian Standard Time (IST)",
   };
 
-  const handleViewCalendar = () => {
-    // Add calendar integration logic here
-    console.log("Add to calendar");
-  };
-
-  const handleGoHome = () => {
-    navigate("/");
-  };
-
   return (
-    <div className="confirmation-wrapper">
-      <div className={`confirmation-container ${showContent ? "show" : ""}`}>
+    <div className={styles["confirmation-wrapper"]}>
+      <div
+        className={`${styles["confirmation-container"]} ${
+          showContent ? styles.show : ""
+        }`}
+      >
         {/* Success Icon */}
-        <div className="success-icon-wrapper">
-          <div className="success-icon-bg"></div>
-          <CheckCircle className="success-icon" size={80} />
+        <div className={styles["success-icon-wrapper"]}>
+          <div className={styles["success-icon-bg"]}></div>
+          <CheckCircle className={styles["success-icon"]} size={80} />
         </div>
 
-        {/* Main Heading */}
-        <h1 className="confirmation-title">Meeting Confirmed!</h1>
-        <p className="confirmation-subtitle">
+        <h1 className={styles["confirmation-title"]}>Meeting Confirmed!</h1>
+        <p className={styles["confirmation-subtitle"]}>
           Your expert consultation has been successfully scheduled
         </p>
 
         {/* Details Card */}
-        <div className="details-card">
-          <div className="detail-item">
-            <div className="detail-icon">
+        <div className={styles["details-card"]}>
+          <div className={styles["detail-item"]}>
+            <div className={styles["detail-icon"]}>
               <Calendar size={20} />
             </div>
-            <div className="detail-content">
-              <span className="detail-label">Date</span>
-              <span className="detail-value">{appointmentDetails.date}</span>
+            <div className={styles["detail-content"]}>
+              <span className={styles["detail-label"]}>Date</span>
+              <span className={styles["detail-value"]}>
+                {appointmentDetails.date}
+              </span>
             </div>
           </div>
 
-          <div className="detail-item">
-            <div className="detail-icon">
+          <div className={styles["detail-item"]}>
+            <div className={styles["detail-icon"]}>
               <Clock size={20} />
             </div>
-            <div className="detail-content">
-              <span className="detail-label">Time</span>
-              <span className="detail-value">{appointmentDetails.time}</span>
-              <span className="detail-timezone">
+            <div className={styles["detail-content"]}>
+              <span className={styles["detail-label"]}>Time</span>
+              <span className={styles["detail-value"]}>
+                {appointmentDetails.time}
+              </span>
+              <span className={styles["detail-timezone"]}>
                 {appointmentDetails.timezone}
               </span>
             </div>
           </div>
 
-          <div className="detail-item">
-            <div className="detail-icon">
+          <div className={styles["detail-item"]}>
+            <div className={styles["detail-icon"]}>
               <Mail size={20} />
             </div>
-            <div className="detail-content">
-              <span className="detail-label">Confirmation sent to</span>
-              <span className="detail-value">{appointmentDetails.email}</span>
+            <div className={styles["detail-content"]}>
+              <span className={styles["detail-label"]}>
+                Confirmation sent to
+              </span>
+              <span className={styles["detail-value"]}>
+                {appointmentDetails.email}
+              </span>
+
               {appointmentDetails.guestEmail && (
-                <span className="detail-value guest">
+                <span className={`${styles["detail-value"]} ${styles.guest}`}>
                   {appointmentDetails.guestEmail}
                 </span>
               )}
@@ -97,35 +98,32 @@ const ConfirmationPage = () => {
           </div>
         </div>
 
-        {/* Info Banner */}
-        <div className="info-banner">
-          <div className="info-icon">📧</div>
-          <div className="info-text">
-            <p className="info-title">Check your email</p>
-            <p className="info-description">
+        {/* Info Banner
+        <div className={styles["info-banner"]}>
+          <div className={styles["info-icon"]}>📧</div>
+          <div className={styles["info-text"]}>
+            <p className={styles["info-title"]}>Check your email</p>
+            <p className={styles["info-description"]}>
               We've sent a calendar invite and meeting details to your email
-              address
             </p>
           </div>
-        </div>
+        </div> */}
 
-        {/* Action Buttons */}
-        <div className="action-buttons">
-          {/* <button className="btn-secondary" onClick={handleViewCalendar}>
-            <Calendar size={20} />
-            Add to Calendar
-          </button> */}
-          <button className="btn-primary" onClick={handleGoHome}>
+        {/* Buttons */}
+        <div className={styles["action-buttons"]}>
+          <button
+            className={styles["btn-primary"]}
+            onClick={() => navigate("/")}
+          >
             Back to Home
             <ArrowRight size={20} />
           </button>
         </div>
 
-        {/* Footer Note */}
-        <div className="footer-note">
+        {/* <div className={styles["footer-note"]}>
           <Users size={16} />
           <span>Need to reschedule? Check your email for the meeting link</span>
-        </div>
+        </div> */}
       </div>
     </div>
   );

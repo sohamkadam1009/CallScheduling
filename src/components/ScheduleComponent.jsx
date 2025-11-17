@@ -1,9 +1,8 @@
 import React, { useState, useRef, useEffect, useContext } from "react";
 import { ChevronRight, ChevronLeft, Calendar } from "lucide-react";
-import "./ScheduleComponent.css";
-import { Navigate, useNavigate } from "react-router-dom";
+import styles from "./ScheduleComponent.module.css";
+import { useNavigate } from "react-router-dom";
 import { DetailsContext } from "./contexts/Details";
-import { time } from "framer-motion";
 
 const ScheduleComponent = () => {
   const [selectedDate, setSelectedDate] = useState(null);
@@ -15,7 +14,6 @@ const ScheduleComponent = () => {
 
   const { data, setData } = useContext(DetailsContext);
 
-  // Close calendar when clicking outside
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (calendarRef.current && !calendarRef.current.contains(event.target)) {
@@ -38,7 +36,6 @@ const ScheduleComponent = () => {
       return;
     }
 
-    // Format the date HERE before storing in context
     const formattedDate = selectedDate.toLocaleDateString("en-US", {
       weekday: "short",
       month: "short",
@@ -48,8 +45,8 @@ const ScheduleComponent = () => {
 
     setData((prev) => ({
       ...prev,
-      time: selectedTime, // already a string
-      date: formattedDate, // IMPORTANT: now it's a string (safe)
+      time: selectedTime,
+      date: formattedDate,
     }));
 
     navigate("/emailDetails");
@@ -145,53 +142,55 @@ const ScheduleComponent = () => {
   };
 
   return (
-    <div style={styles.wrapper}>
-      <div className="schedule-wrapper">
-        <div className="header">
+    <div style={{ width: "100%", backgroundColor: "#1a1a1a" }}>
+      <div className={styles["schedule-wrapper"]}>
+        <div className={styles.header}>
           <h2>Select date and time</h2>
         </div>
 
-        <div className="date-picker-container" ref={calendarRef}>
-          <label className="date-label">Select a date:</label>
+        <div className={styles["date-picker-container"]} ref={calendarRef}>
+          <label className={styles["date-label"]}>Select a date:</label>
 
           <button
-            className={`date-input ${showCalendar ? "active" : ""}`}
+            className={`${styles["date-input"]} ${
+              showCalendar ? styles.active : ""
+            }`}
             onClick={() => setShowCalendar(!showCalendar)}
           >
-            <div className="date-input-content">
-              <Calendar size={20} className="date-input-icon" />
+            <div className={styles["date-input-content"]}>
+              <Calendar size={20} className={styles["date-input-icon"]} />
               <span
-                className={`date-input-text ${
-                  !selectedDate ? "placeholder" : ""
+                className={`${styles["date-input-text"]} ${
+                  !selectedDate ? styles.placeholder : ""
                 }`}
               >
                 {selectedDate ? formatDate(selectedDate) : "Choose your date"}
               </span>
             </div>
-            <ChevronRight size={20} className="date-input-arrow" />
+            <ChevronRight size={20} className={styles["date-input-arrow"]} />
           </button>
 
           {showCalendar && (
-            <div className="calendar-dropdown">
-              <div className="calendar-header">
-                <button className="nav-btn" onClick={handlePrevMonth}>
+            <div className={styles["calendar-dropdown"]}>
+              <div className={styles["calendar-header"]}>
+                <button className={styles["nav-btn"]} onClick={handlePrevMonth}>
                   <ChevronLeft size={18} />
                 </button>
-                <span className="month-year">{monthName}</span>
-                <button className="nav-btn" onClick={handleNextMonth}>
+                <span className={styles["month-year"]}>{monthName}</span>
+                <button className={styles["nav-btn"]} onClick={handleNextMonth}>
                   <ChevronRight size={18} />
                 </button>
               </div>
 
-              <div className="day-names-grid">
+              <div className={styles["day-names-grid"]}>
                 {dayNames.map((day) => (
-                  <div key={day} className="day-name">
+                  <div key={day} className={styles["day-name"]}>
                     {day}
                   </div>
                 ))}
               </div>
 
-              <div className="days-grid">
+              <div className={styles["days-grid"]}>
                 {calendarDays.map((date, idx) => {
                   const isDisabled = !date || isSunday(date) || isPast(date);
                   const isSelected =
@@ -203,9 +202,9 @@ const ScheduleComponent = () => {
                   return (
                     <button
                       key={idx}
-                      className={`day ${
-                        isTodayDate && !isDisabled ? "today" : ""
-                      } ${isSelected ? "selected" : ""}`}
+                      className={`${styles.day} ${
+                        isTodayDate && !isDisabled ? styles.today : ""
+                      } ${isSelected ? styles.selected : ""}`}
                       onClick={() => handleDateClick(date)}
                       disabled={isDisabled}
                     >
@@ -218,20 +217,22 @@ const ScheduleComponent = () => {
           )}
         </div>
 
-        <div className="duration-info">
-          <div className="dot"></div>
-          <span className="duration-text">
+        <div className={styles["duration-info"]}>
+          <div className={styles.dot}></div>
+          <span className={styles["duration-text"]}>
             45 min call (Indian Standard Time)
           </span>
         </div>
 
-        <div className="time-section">
-          <div className="time-grid">
+        <div className={styles["time-section"]}>
+          <div className={styles["time-grid"]}>
             {timeSlots.map((time) => (
               <button
                 key={time}
                 onClick={() => setSelectedTime(time)}
-                className={`time-btn ${selectedTime === time ? "active" : ""}`}
+                className={`${styles["time-btn"]} ${
+                  selectedTime === time ? styles.active : ""
+                }`}
               >
                 {time}
               </button>
@@ -239,27 +240,20 @@ const ScheduleComponent = () => {
           </div>
         </div>
 
-        <div className="info-box">
-          <div className="icon">💡</div>
-          <span className="info-text">
+        <div className={styles["info-box"]}>
+          <div className={styles.icon}>💡</div>
+          <span className={styles["info-text"]}>
             1,943 users scheduled free meeting with Dezerv in the past month
           </span>
         </div>
 
-        <button className="confirm-btn" onClick={() => handleConfirm()}>
+        <button className={styles["confirm-btn"]} onClick={handleConfirm}>
           Confirm time slot
           <ChevronRight size={20} />
         </button>
       </div>
     </div>
   );
-};
-
-const styles = {
-  wrapper: {
-    width: "100%",
-    backgroundColor: "#1a1a1a",
-  },
 };
 
 export default ScheduleComponent;

@@ -67,7 +67,7 @@
 
 .help-btn:hover {
   background: rgba(107, 114, 128, 0.4);
-  border-color: rgba(107, 114, 128, 0.7);
+ background-color: #20ba5a;
 }
 
 /* Form Styles */

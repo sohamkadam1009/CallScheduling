@@ -1,35 +1,33 @@
 // NameDetails Component
-import React from "react";
-import { useState } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import "./NameDetails.css";
+import styles from "./NameDetails.module.css";
+import { OtpVerification } from "./contexts/OtpVerification";
+import { useContext } from "react";
 
 const NameDetails = () => {
   const [name, setName] = useState("");
   const navigate = useNavigate();
 
-  // const handleBack = () => {
-  //   // navigate(-1);
-  // };
+  const { isOTPVerified, setIsOTPVerified } = useContext(OtpVerification);
 
   const handleNext = () => {
     if (name.trim()) {
       console.log("Name submitted:", name);
-      // Handle navigation or form submission
-      navigate("/contactDetails");
+      if (!isOTPVerified) {
+        navigate("/contactDetails");
+      } else {
+        navigate("/InvestmentDetails");
+      }
     }
   };
 
   return (
-    <div className="name-details-section">
-      <div className="header">
-        {/* <button className="back-button" onClick={() => handleBack()}>
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="white">
-            <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z" />
-          </svg>
-        </button> */}
-        <span className="step-indicator">Step 1 of 4</span>
-        <button className="help-button">
+    <div className={styles["name-details-section"]}>
+      <div className={styles.header}>
+        <span className={styles["step-indicator"]}>Step 1 of 4</span>
+
+        <button className={styles["help-button"]}>
           <svg
             width="20"
             height="20"
@@ -44,21 +42,26 @@ const NameDetails = () => {
         </button>
       </div>
 
-      <div className="form-container">
-        <h2 className="form-title">What is your name?</h2>
+      <div className={styles["form-container"]}>
+        <h2 className={styles["form-title"]}>What is your name?</h2>
 
-        <div className="input-wrapper">
+        <div className={styles["input-wrapper"]}>
           <input
             type="text"
-            className="name-input"
+            className={styles["name-input"]}
             placeholder="Enter your full name"
             value={name}
             onChange={(e) => setName(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter" && name.trim()) handleNext();
+            }}
           />
         </div>
 
         <button
-          className={`next-button ${name.trim() ? "active" : ""}`}
+          className={`${styles["next-button"]} ${
+            name.trim() ? styles.active : ""
+          }`}
           onClick={handleNext}
           disabled={!name.trim()}
         >
@@ -68,7 +71,7 @@ const NameDetails = () => {
           </svg>
         </button>
 
-        <div className="footer">
+        <div className={styles.footer}>
           <svg
             width="16"
             height="16"
@@ -80,7 +83,9 @@ const NameDetails = () => {
             <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
             <path d="M7 11V7a5 5 0 0 1 10 0v4" />
           </svg>
-          <span className="footer-text">Your data is 100% protected</span>
+          <span className={styles["footer-text"]}>
+            Your data is 100% protected
+          </span>
         </div>
       </div>
     </div>

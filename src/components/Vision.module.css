@@ -31,6 +31,9 @@ body {
 
 .testimonial-container {
   max-width: 500px;
+  opacity: 0;
+  transform: translateY(10px);
+  animation: fadeIn 0.8s ease-out 0.7s forwards;
 }
 
 .profile-avatar {
@@ -77,6 +80,17 @@ body {
 .author-title {
   color: #999;
   font-weight: 400;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 /* Responsive Design for Vision Section */

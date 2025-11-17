@@ -1,26 +1,28 @@
 import React from "react";
-import "./Vision.css";
+import styles from "./Vision.module.css";
 
 const Vision = () => {
   return (
-    <div className="vision-section">
-      <div className="testimonial-container">
-        <div className="profile-avatar">
+    <div className={styles["vision-section"]}>
+      <div className={styles["testimonial-container"]}>
+        <div className={styles["profile-avatar"]}>
           <img
             src="https://api.dicebear.com/7.x/avataaars/svg?seed=rajesh"
-            alt=" Ananya Sharma"
-            className="avatar-img"
+            alt="Ananya Sharma"
+            className={styles["avatar-img"]}
           />
         </div>
 
-        <blockquote className="testimonial-quote">
+        <blockquote className={styles["testimonial-quote"]}>
           I never realized how much potential growth I was missing out on until
           this consultation.
         </blockquote>
 
-        <div className="testimonial-author">
-          <span className="author-name">- Ananya Sharma, </span>
-          <span className="author-title">Co-founder, Horizon Capital</span>
+        <div className={styles["testimonial-author"]}>
+          <span className={styles["author-name"]}>- Ananya Sharma, </span>
+          <span className={styles["author-title"]}>
+            Co-founder, Horizon Capital
+          </span>
         </div>
       </div>
     </div>

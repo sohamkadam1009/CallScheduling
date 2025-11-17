@@ -1,13 +1,17 @@
-// VerifyOtp.jsx
 import React, { useState, useEffect } from "react";
-import "./VerifyOtp.css";
+import styles from "./VerifyOtp.module.css";
 import { useNavigate } from "react-router-dom";
+
+import { OtpVerification } from "./contexts/OtpVerification";
+import { useContext } from "react";
 
 const VerifyOtp = ({ phoneNumber, onVerify }) => {
   const [otp, setOtp] = useState("");
   const [timer, setTimer] = useState(26);
   const [canResend, setCanResend] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+
+  const { isOTPVerified, setIsOTPVerified } = useContext(OtpVerification);
 
   const navigate = useNavigate();
 
@@ -33,15 +37,14 @@ const VerifyOtp = ({ phoneNumber, onVerify }) => {
     e.preventDefault();
     if (otp.length === 4) {
       setIsLoading(true);
-      // Simulate API call
+
       setTimeout(() => {
         console.log("OTP Verified:", otp);
-        //navigate
-        navigate("/investmentDetails");
+        setIsOTPVerified(() => true);
 
-        if (onVerify) {
-          onVerify(otp);
-        }
+        navigate("/investmentDetails", { replace: true });
+
+        if (onVerify) onVerify(otp);
         setIsLoading(false);
       }, 1000);
     }
@@ -55,21 +58,20 @@ const VerifyOtp = ({ phoneNumber, onVerify }) => {
   };
 
   return (
-    <div className="otp-container">
-      <div className="otp-card">
+    <div className={styles["otp-container"]}>
+      <div className={styles["otp-card"]}>
         {/* Header */}
-        <div className="otp-header">
-          <h1 className="otp-title">Verify OTP</h1>
-          <p className="otp-description">
+        <div className={styles["otp-header"]}>
+          <h1 className={styles["otp-title"]}>Verify OTP</h1>
+          <p className={styles["otp-description"]}>
             Enter the 4-digit OTP sent to{" "}
-            <span className="otp-number">{phoneNumber}</span>
+            <span className={styles["otp-number"]}>{phoneNumber}</span>
           </p>
         </div>
 
         {/* Form */}
-        <form onSubmit={handleVerify} className="otp-form">
-          {/* OTP Input */}
-          <div className="otp-input-group">
+        <form onSubmit={handleVerify} className={styles["otp-form"]}>
+          <div className={styles["otp-input-group"]}>
             <input
               type="text"
               inputMode="numeric"
@@ -77,38 +79,43 @@ const VerifyOtp = ({ phoneNumber, onVerify }) => {
               placeholder="Enter 4 digit OTP"
               value={otp}
               onChange={handleOtpChange}
-              className="otp-input"
+              className={styles["otp-input"]}
               required
             />
           </div>
 
-          {/* Consent Text */}
-          <p className="otp-consent">
+          {/* Consent */}
+          <p className={styles["otp-consent"]}>
             By proceeding, you give consent to receive communication on WhatsApp
             and agree to our{" "}
-            <a href="#terms" className="otp-link">
+            <a href="#terms" className={styles["otp-link"]}>
               Terms
             </a>{" "}
             and{" "}
-            <a href="#privacy" className="otp-link">
+            <a href="#privacy" className={styles["otp-link"]}>
               Privacy Policy
             </a>
           </p>
 
-          {/* Buttons Container */}
-          <div className="otp-buttons">
+          {/* Buttons */}
+          <div className={styles["otp-buttons"]}>
             <button
               type="button"
               onClick={handleResend}
               disabled={!canResend}
-              className={`resend-btn ${!canResend ? "disabled" : ""}`}
+              className={`${styles["resend-btn"]} ${
+                !canResend ? styles["disabled"] : ""
+              }`}
             >
               Resend OTP {!canResend && `(${timer})`}
             </button>
+
             <button
               type="submit"
               disabled={otp.length !== 4 || isLoading}
-              className={`verify-btn ${isLoading ? "loading" : ""}`}
+              className={`${styles["verify-btn"]} ${
+                isLoading ? styles["loading"] : ""
+              }`}
             >
               {isLoading ? "Verifying..." : "Verify OTP"}
             </button>
