@@ -1,15 +1,20 @@
 import React, { useState, useEffect } from "react";
 import styles from "./VerifyOtp.module.css";
 import { useNavigate } from "react-router-dom";
+import { useContext } from "react";
 
 import { OtpVerification } from "./contexts/OtpVerification";
-import { useContext } from "react";
+import { userDetails } from "./contexts/userDetails";
+
+import { verifyOtp } from "../api/flowApi";
 
 const VerifyOtp = ({ phoneNumber, onVerify }) => {
   const [otp, setOtp] = useState("");
   const [timer, setTimer] = useState(26);
   const [canResend, setCanResend] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+
+  const { userData, setUserData } = useContext(userDetails);
 
   const { isOTPVerified, setIsOTPVerified } = useContext(OtpVerification);
 
@@ -33,20 +38,32 @@ const VerifyOtp = ({ phoneNumber, onVerify }) => {
     setOtp(value);
   };
 
-  const handleVerify = (e) => {
+  const handleVerify = async (e) => {
     e.preventDefault();
+
     if (otp.length === 4) {
-      setIsLoading(true);
+      try {
+        const res = await verifyOtp(Number(userData.userId), otp);
 
-      setTimeout(() => {
-        console.log("OTP Verified:", otp);
-        setIsOTPVerified(() => true);
+        if (res.data.verified) {
+          setIsLoading(true);
 
-        navigate("/investmentDetails", { replace: true });
+          setTimeout(() => {
+            console.log("OTP Verified:", otp);
+            setIsOTPVerified(true);
 
-        if (onVerify) onVerify(otp);
-        setIsLoading(false);
-      }, 1000);
+            navigate("/investmentDetails", { replace: true });
+
+            if (onVerify) onVerify(otp);
+            setIsLoading(false);
+          }, 1000);
+        } else {
+          alert("Wrong OTP");
+        }
+      } catch (error) {
+        alert("Error verifying OTP");
+        console.error(error);
+      }
     }
   };
 

@@ -3,6 +3,9 @@ import { ChevronRight, ChevronLeft, Calendar } from "lucide-react";
 import styles from "./ScheduleComponent.module.css";
 import { useNavigate } from "react-router-dom";
 import { DetailsContext } from "./contexts/Details";
+import { userDetails } from "./contexts/userDetails";
+
+import { checkSlot } from "../api/flowApi";
 
 const ScheduleComponent = () => {
   const [selectedDate, setSelectedDate] = useState(null);
@@ -13,6 +16,7 @@ const ScheduleComponent = () => {
   const navigate = useNavigate();
 
   const { data, setData } = useContext(DetailsContext);
+  const { userData, setUserData } = useContext(userDetails);
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -30,27 +34,94 @@ const ScheduleComponent = () => {
     };
   }, [showCalendar]);
 
-  const handleConfirm = () => {
-    if (!selectedDate) {
-      alert("Please select a date");
+  const handleConfirm = async () => {
+    if (!selectedDate || !selectedTime) {
+      alert("Please select a date and time");
       return;
     }
 
-    const formattedDate = selectedDate.toLocaleDateString("en-US", {
-      weekday: "short",
-      month: "short",
-      day: "numeric",
-      year: "numeric",
-    });
+    // Convert date → YYYY-MM-DD for backend
+    const backendDate = selectedDate.toISOString().split("T")[0];
 
-    setData((prev) => ({
-      ...prev,
-      time: selectedTime,
-      date: formattedDate,
-    }));
+    // Convert 12-hour time to 24-hour time
+    const convertTo24Hour = (time12h) => {
+      let [time, modifier] = time12h.split(" "); // "10:00", "AM"
 
-    navigate("/emailDetails");
+      let [hours, minutes] = time.split(":");
+
+      if (modifier === "PM" && hours !== "12") {
+        hours = String(Number(hours) + 12); // 1 PM → 13
+      }
+
+      if (modifier === "AM" && hours === "12") {
+        hours = "00"; // 12 AM → 00
+      }
+
+      return `${hours}:${minutes}:00`; // add seconds
+    };
+
+    const backendTime = convertTo24Hour(selectedTime);
+    console.log("Sending to API:", backendDate, backendTime);
+
+    try {
+      const res = await checkSlot(backendDate, backendTime);
+
+      if (res.data.available) {
+        // Store formatted values in context
+        const formattedDate = selectedDate.toLocaleDateString("en-US", {
+          weekday: "short",
+          month: "short",
+          day: "numeric",
+          year: "numeric",
+        });
+
+        setData((prev) => ({
+          ...prev,
+          time: selectedTime, // human-readable
+          // backendTime: backendTime, // API time
+          date: formattedDate,
+          // backendDate: backendDate, // API date
+        }));
+
+        setUserData((prev) => ({
+          ...prev,
+          time: backendTime, // human-readable
+          // backendTime: backendTime, // API time
+          date: backendDate,
+          // backendDate: backendDate, // API date
+        }));
+
+        navigate("/emailDetails");
+      } else {
+        alert("Slot full! Choose another time");
+      }
+    } catch (err) {
+      alert("Unable to check slot. Check backend connection.");
+      console.error(err);
+    }
   };
+
+  // const handleConfirm = () => {
+  //   if (!selectedDate) {
+  //     alert("Please select a date");
+  //     return;
+  //   }
+
+  //   const formattedDate = selectedDate.toLocaleDateString("en-US", {
+  //     weekday: "short",
+  //     month: "short",
+  //     day: "numeric",
+  //     year: "numeric",
+  //   });
+
+  //   setData((prev) => ({
+  //     ...prev,
+  //     time: selectedTime,
+  //     date: formattedDate,
+  //   }));
+
+  //   navigate("/emailDetails");
+  // };
 
   const isSunday = (date) => date.getDay() === 0;
 

@@ -1,9 +1,13 @@
 import styles from "./InvestmentDetails.module.css";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
+import { selectInvestment } from "../api/flowApi";
+import { userDetails } from "./contexts/userDetails";
 
 const InvestmentDetails = () => {
   const [selectedRange, setSelectedRange] = useState("");
+
+  const { userData, setUserdata } = useContext(userDetails);
 
   const navigate = useNavigate();
 
@@ -32,7 +36,13 @@ const InvestmentDetails = () => {
     setSelectedRange(id);
   };
 
-  const handleContinue = () => {
+  // if (!res.data.eligible) {
+  //   alert("Not eligible for Investza PMS");
+  //   return;
+  // }
+
+  const handleContinue = async () => {
+    const res = await selectInvestment(Number(userData.userId), selectedRange);
     if (selectedRange === "below-50") {
       navigate("/getStarted");
     } else {

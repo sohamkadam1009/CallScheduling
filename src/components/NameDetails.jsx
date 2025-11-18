@@ -5,15 +5,42 @@ import styles from "./NameDetails.module.css";
 import { OtpVerification } from "./contexts/OtpVerification";
 import { useContext } from "react";
 
+import { startFlow } from "../api/flowApi";
+import { userDetails } from "./contexts/userDetails";
+
 const NameDetails = () => {
   const [name, setName] = useState("");
   const navigate = useNavigate();
 
   const { isOTPVerified, setIsOTPVerified } = useContext(OtpVerification);
+  const { userData, setUserData } = useContext(userDetails);
 
-  const handleNext = () => {
+  const handleNext = async () => {
     if (name.trim()) {
       console.log("Name submitted:", name);
+      try {
+        // 1️⃣ Start flow API call
+        const res = await startFlow(name);
+        const userId = res.data.id;
+
+        // 2️⃣ Save userId + name in global context
+        setUserData((prev) => ({
+          ...prev,
+          userId: userId,
+          userName: name,
+        }));
+
+        console.log("Flow started. User ID:", userId);
+
+        // 3️⃣ Navigate to next page based on OTP status
+        if (!isOTPVerified) {
+          navigate("/contactDetails");
+        } else {
+          navigate("/investmentDetails");
+        }
+      } catch (error) {
+        console.error("Error starting flow:", error);
+      }
       if (!isOTPVerified) {
         navigate("/contactDetails");
       } else {

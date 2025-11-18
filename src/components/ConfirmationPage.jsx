@@ -1,14 +1,6 @@
 import React, { useEffect, useState, useContext } from "react";
-import {
-  CheckCircle,
-  Calendar,
-  Clock,
-  Mail,
-  Users,
-  ArrowRight,
-} from "lucide-react";
-
-import styles from "./ConfirmationPage.module.css"; // ⬅️ updated
+import { CheckCircle, Calendar, Clock, Mail, ArrowRight } from "lucide-react";
+import styles from "./ConfirmationPage.module.css";
 import { useNavigate } from "react-router-dom";
 import { DetailsContext } from "./contexts/Details";
 
@@ -18,8 +10,18 @@ const ConfirmationPage = () => {
   const { data } = useContext(DetailsContext);
 
   useEffect(() => {
-    setTimeout(() => setShowContent(true), 100);
-  }, []);
+    // Show content with animation
+    const contentTimer = setTimeout(() => setShowContent(true), 100);
+
+    // Navigate to home after 10 seconds
+    const navigateTimer = setTimeout(() => navigate("/"), 10000);
+
+    // Cleanup timers on unmount
+    return () => {
+      clearTimeout(contentTimer);
+      clearTimeout(navigateTimer);
+    };
+  }, [navigate]);
 
   const appointmentDetails = {
     date: data.date,
@@ -98,17 +100,6 @@ const ConfirmationPage = () => {
           </div>
         </div>
 
-        {/* Info Banner
-        <div className={styles["info-banner"]}>
-          <div className={styles["info-icon"]}>📧</div>
-          <div className={styles["info-text"]}>
-            <p className={styles["info-title"]}>Check your email</p>
-            <p className={styles["info-description"]}>
-              We've sent a calendar invite and meeting details to your email
-            </p>
-          </div>
-        </div> */}
-
         {/* Buttons */}
         <div className={styles["action-buttons"]}>
           <button
@@ -119,11 +110,6 @@ const ConfirmationPage = () => {
             <ArrowRight size={20} />
           </button>
         </div>
-
-        {/* <div className={styles["footer-note"]}>
-          <Users size={16} />
-          <span>Need to reschedule? Check your email for the meeting link</span>
-        </div> */}
       </div>
     </div>
   );

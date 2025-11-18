@@ -1,19 +1,42 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import styles from "./ContactDetails.module.css";
 import { useNavigate } from "react-router-dom";
+import { userDetails } from "./contexts/userDetails";
+
+import { sendOtp } from "../api/flowApi";
 
 const ContactDetails = () => {
   const [phoneNumber, setPhoneNumber] = useState("");
   const navigate = useNavigate();
+  const { userData, setUserData } = useContext(userDetails);
 
   const handleBack = () => {
     navigate("/");
   };
 
-  const handleSendOTP = () => {
+  const handleSendOTP = async () => {
     if (phoneNumber.trim()) {
-      console.log("Sending OTP to:", phoneNumber);
-      navigate("/verification", { replace: true });
+      try {
+        console.log(userData.userId);
+        // 1️⃣ Call backend API
+        const res = await sendOtp(Number(userData.userId), phoneNumber);
+
+        // 2️⃣ Save phone number to global context
+        setUserData((prev) => ({
+          ...prev,
+          userPhone: phoneNumber,
+          otp: res.data.otp,
+        }));
+
+        // 3️⃣ Confirmation to user
+        alert("OTP sent: " + res.data.otp);
+
+        // 4️⃣ Navigate to OTP page
+        navigate("/verification", { replace: true });
+      } catch (error) {
+        console.error("Error sending OTP:", error);
+        alert("Failed to send OTP. Try again.");
+      }
     }
   };
 

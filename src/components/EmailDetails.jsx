@@ -1,11 +1,15 @@
 import React, { useState, useEffect, useContext } from "react";
 import { ChevronLeft, MessageCircle } from "lucide-react";
-import styles from "./EmailDetails.module.css"; // ⬅️ updated
+import styles from "./EmailDetails.module.css";
 import { useNavigate } from "react-router-dom";
 import { DetailsContext } from "./contexts/Details";
+import { userDetails } from "./contexts/userDetails";
+
+import { createBooking } from "../api/flowApi";
 
 const EmailDetails = ({ onBack }) => {
   const { data, setData } = useContext(DetailsContext);
+  const { userData, setUserData } = useContext(userDetails);
 
   const [formData, setFormData] = useState({
     email: "",
@@ -34,15 +38,51 @@ const EmailDetails = ({ onBack }) => {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (isFormValid) {
-      setData((prev) => ({
-        ...prev,
-        email: formData.email,
-        guestEmail: formData.guestEmail,
-      }));
-      navigate("/confirmation");
+      try {
+        // 1️⃣ Save to context first
+        setData((prev) => ({
+          ...prev,
+          email: formData.email,
+          guestEmail: formData.guestEmail,
+        }));
+
+        setUserData((prev) => ({
+          ...prev,
+          email: formData.email,
+          guestEmail: formData.guestEmail,
+          message: formData.message,
+        }));
+
+        // 2️⃣ Call API to create booking
+
+        const response = await createBooking({
+          userId: Number(userData.userId),
+          email: formData.email, // <-- Always latest
+          guestEmail: formData.guestEmail,
+          message: formData.message,
+          date: userData.date,
+          time: userData.time,
+        });
+
+        // 3️⃣ Handle success
+        alert("Booking Successful!");
+
+        // 4️⃣ Navigate to confirmation page
+        navigate("/confirmation");
+      } catch (error) {
+        console.error("Booking failed:", error);
+        alert("Booking failed! Please try again.");
+      }
+      // setData((prev) => ({
+      //   ...prev,
+      //   email: formData.email,
+      //   guestEmail: formData.guestEmail,
+      // }));
+
+      // navigate("/confirmation");
     }
   };
 
