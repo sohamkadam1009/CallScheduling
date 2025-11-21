@@ -1,19 +1,10 @@
-import React, { useEffect } from "react";
-import styles from "./LoadingPage.module.css"; // UPDATED
-import image from "../assets/react.svg";
-import { useNavigate } from "react-router-dom";
+import React from "react";
+import styles from "./LoadingPage.module.css";
+import Abhishek from "../assets/abhishek.webp";
+import Pooja from "../assets/pooja.webp";
+import Varun from "../assets/varun.webp";
 
 const LoadingPage = () => {
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      navigate("/scheduleCall");
-    }, 6000);
-
-    return () => clearTimeout(timer);
-  }, [navigate]);
-
   return (
     <div className={styles["loading-page"]}>
       <div className={styles.container}>
@@ -22,7 +13,7 @@ const LoadingPage = () => {
             className={`${styles["profile-wrapper"]} ${styles["profile-1"]}`}
           >
             <img
-              src={image}
+              src={Pooja}
               alt="Investment Expert 1"
               className={styles["profile-pic"]}
             />
@@ -32,7 +23,7 @@ const LoadingPage = () => {
             className={`${styles["profile-wrapper"]} ${styles["profile-2"]}`}
           >
             <img
-              src={image}
+              src={Abhishek}
               alt="Investment Expert 2"
               className={`${styles["profile-pic"]} ${styles["profile-pic-main"]}`}
             />
@@ -42,20 +33,17 @@ const LoadingPage = () => {
             className={`${styles["profile-wrapper"]} ${styles["profile-3"]}`}
           >
             <img
-              src={image}
+              src={Varun}
               alt="Investment Expert 3"
               className={styles["profile-pic"]}
             />
           </div>
         </div>
 
-        <h1 className={styles.title}>
-          Congratulations! You are eligible for Investza PMS
-        </h1>
+        <h1 className={styles.title}>Congratulations!</h1>
 
         <p className={styles.subtitle}>
-          Assigning a Investza investment expert. Please avoid clicking back or
-          closing the window
+          your meeting has been scheduled with one of your experts from Investza
           <span className={styles["loading-dots"]}>
             <span>.</span>
             <span>.</span>

@@ -36,8 +36,8 @@
 }
 
 .help-btn {
-  background-color: #25d366;
-  color: #fff;
+  background-color:#ffff;
+  color: #000;
   border: none;
   padding: 10px 20px;
   border-radius: 24px;
@@ -51,7 +51,9 @@
 }
 
 .help-btn:hover {
-  background-color: #20ba5a;
+  background-color: #EDF2FB;
+  border: rgba(107, 114, 128, 0.7);
+  
 }
 
 .contact-form-container {

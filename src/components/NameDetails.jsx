@@ -1,5 +1,6 @@
 // NameDetails Component
 import React, { useState } from "react";
+import { ChevronRight } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import styles from "./NameDetails.module.css";
 import { OtpVerification } from "./contexts/OtpVerification";
@@ -93,9 +94,10 @@ const NameDetails = () => {
           disabled={!name.trim()}
         >
           Next
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+          <ChevronRight size={20} />
+          {/* <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
             <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z" />
-          </svg>
+          </svg> */}
         </button>
 
         <div className={styles.footer}>

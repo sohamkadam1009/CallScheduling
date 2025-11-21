@@ -36,8 +36,8 @@
 }
 
 .help-btn {
-  background-color: #25d366;
-  color: #fff;
+   background-color:#EDF2FB;
+  color: #000;
   border: none;
   padding: 10px 20px;
   border-radius: 24px;
@@ -51,7 +51,8 @@
 }
 
 .help-btn:hover {
-  background-color: #20ba5a;
+  background-color: #dadfe8;
+  border: rgba(107, 114, 128, 0.7);
 }
 
 .investment-form-container {

@@ -9,8 +9,8 @@ export default function Page({ Left, Right }) {
         backgroundColor: "#000",
       }}
     >
-      <Left />
-      <Right />
+      {Left}
+      {Right}
     </div>
   );
 }

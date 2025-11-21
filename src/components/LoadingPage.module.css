@@ -5,7 +5,7 @@
 }
 
 .loading-page {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, 'Helvetica Neue', sans-serif;
+  /* font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, 'Helvetica Neue', sans-serif; */
   background-color: #0a0a0a;
   color: white;
   display: flex;
@@ -32,94 +32,97 @@
   min-height: 140px;
 }
 
-/* base hidden */
+/* base state */
 .profile-wrapper {
   opacity: 0;
-  transform: translateX(-40px);
+  transform: scale(0.8);
+  transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
-/* Sequential infinite animation */
+/* Sequential staggered fade-in with scale and glow */
 .profile-1 {
-  animation: slideSequence 6s infinite;
+  animation: smoothFadeScale 6s ease-in-out infinite;
 }
 
 .profile-2 {
-  animation: slideSequence 6s infinite;
-  animation-delay: 2s;
+  animation: smoothFadeScale 6s ease-in-out infinite;
+  animation-delay: 0.3s;
 }
 
 .profile-3 {
-  animation: slideSequence 6s infinite;
-  animation-delay: 4s;
+  animation: smoothFadeScale 6s ease-in-out infinite;
+  animation-delay: 0.6s;
 }
 
-/* Keyframes: each item visible for 2s */
-@keyframes slideSequence {
+/* Modern smooth fade with scale and subtle rotation */
+@keyframes smoothFadeScale {
   0% {
     opacity: 0;
-    transform: translateX(-40px);
+    transform: scale(0.8) translateY(20px);
   }
-  10% {
+  15% {
     opacity: 1;
-    transform: translateX(0);
+    transform: scale(1) translateY(0);
   }
-  40% {
+  85% {
     opacity: 1;
-    transform: translateX(0);
-  }
-  50% {
-    opacity: 0;
-    transform: translateX(40px);
+    transform: scale(1) translateY(0);
   }
   100% {
     opacity: 0;
-    transform: translateX(40px);
+    transform: scale(0.8) translateY(-20px);
   }
 }
 
-/* Profile pics */
+/* Profile pics with subtle shadow and smooth transitions */
 .profile-pic {
   width: 100px;
   height: 100px;
   border-radius: 50%;
-  border: 3px solid #ffffff;
+  border: 3px solid rgba(255, 255, 255, 0.3);
   object-fit: cover;
   background-color: #2a2a2a;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  transition: all 0.3s ease;
+}
+
+.profile-pic:hover {
+  transform: scale(1.05);
+  box-shadow: 0 12px 48px rgba(0, 0, 0, 0.5);
 }
 
 .profile-pic-main {
   width: 130px;
   height: 130px;
-  border: 4px solid #ffffff;
+  border: 4px solid rgba(255, 255, 255, 0.5);
+  box-shadow: 0 12px 48px rgba(255, 255, 255, 0.1);
 }
 
-/* Title fade */
+/* Title fade with modern easing */
 .title {
   font-size: 28px;
   font-weight: 600;
   margin-bottom: 16px;
   line-height: 1.3;
   opacity: 0;
-  transform: translateY(10px);
-  animation: fadeIn 0.8s ease-out 1.2s forwards;
+  transform: translateY(20px);
+  animation: modernFadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 1.2s forwards;
 }
 
-/* Subtitle fade */
+/* Subtitle fade with modern easing */
 .subtitle {
   font-size: 16px;
   color: #999;
   line-height: 1.5;
   opacity: 0;
-  transform: translateY(10px);
-  animation: fadeIn 0.8s ease-out 1.5s forwards;
+  transform: translateY(20px);
+  animation: modernFadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 1.5s forwards;
 }
 
-
-
-@keyframes fadeIn {
+@keyframes modernFadeUp {
   from {
     opacity: 0;
-    transform: translateY(10px);
+    transform: translateY(20px);
   }
   to {
     opacity: 1;
@@ -159,13 +162,13 @@
   .profile-pic {
     width: 80px;
     height: 80px;
-    border: 2px solid #ffffff;
+    border: 2px solid rgba(255, 255, 255, 0.3);
   }
 
   .profile-pic-main {
     width: 110px;
     height: 110px;
-    border: 3px solid #ffffff;
+    border: 3px solid rgba(255, 255, 255, 0.5);
   }
 
   .title {

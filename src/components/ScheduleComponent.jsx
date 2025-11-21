@@ -291,7 +291,7 @@ const ScheduleComponent = () => {
         <div className={styles["duration-info"]}>
           <div className={styles.dot}></div>
           <span className={styles["duration-text"]}>
-            45 min call (Indian Standard Time)
+            30 min call (Indian Standard Time)
           </span>
         </div>
 
@@ -314,7 +314,8 @@ const ScheduleComponent = () => {
         <div className={styles["info-box"]}>
           <div className={styles.icon}>💡</div>
           <span className={styles["info-text"]}>
-            1,943 users scheduled free meeting with Dezerv in the past month
+            2,216 users scheduled free meetings with Investza in the past 3
+            months
           </span>
         </div>
 

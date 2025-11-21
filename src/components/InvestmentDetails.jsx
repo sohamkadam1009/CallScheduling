@@ -3,6 +3,7 @@ import { useState, useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { selectInvestment } from "../api/flowApi";
 import { userDetails } from "./contexts/userDetails";
+import { ChevronRight } from "lucide-react";
 
 const InvestmentDetails = () => {
   const [selectedRange, setSelectedRange] = useState("");
@@ -43,11 +44,7 @@ const InvestmentDetails = () => {
 
   const handleContinue = async () => {
     const res = await selectInvestment(Number(userData.userId), selectedRange);
-    if (selectedRange === "below-50") {
-      navigate("/getStarted");
-    } else {
-      navigate("/landingPage");
-    }
+    navigate("/scheduleCall");
   };
 
   return (
@@ -115,9 +112,10 @@ const InvestmentDetails = () => {
           disabled={!selectedRange}
         >
           Continue
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+          <ChevronRight size={20} />
+          {/* <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
             <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z" />
-          </svg>
+          </svg> */}
         </button>
 
         <div className={styles["investment-footer"]}>

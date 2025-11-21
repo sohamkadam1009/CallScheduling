@@ -4,6 +4,7 @@ import styles from "./EmailDetails.module.css";
 import { useNavigate } from "react-router-dom";
 import { DetailsContext } from "./contexts/Details";
 import { userDetails } from "./contexts/userDetails";
+import { ChevronRight } from "lucide-react";
 
 import { createBooking } from "../api/flowApi";
 
@@ -67,8 +68,8 @@ const EmailDetails = ({ onBack }) => {
           time: userData.time,
         });
 
-        // 3️⃣ Handle success
-        alert("Booking Successful!");
+        // // 3️⃣ Handle success
+        // alert("Booking Successful!");
 
         // 4️⃣ Navigate to confirmation page
         navigate("/confirmation");
@@ -156,7 +157,7 @@ const EmailDetails = ({ onBack }) => {
           disabled={!isFormValid}
         >
           Submit
-          <span className={styles["arrow"]}>→</span>
+          <ChevronRight size={20} />
         </button>
       </form>
     </div>
