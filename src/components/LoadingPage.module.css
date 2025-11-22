@@ -1,12 +1,10 @@
-/* LoadingPage.module.css */
-
 .loadingWrapper {
   width: 100vw;
   height: 100vh;
   display: flex;
-  justify-content: center; /* horizontal center */
-  align-items: center;     /* vertical center */
-  background-color: #08090A;  /* optional, for white cubes to show */
+  justify-content: center; 
+  align-items: center;   
+  background-color: #08090A;  
 }
 
 .skCubeGrid {
@@ -15,14 +13,6 @@
   display: flex;
   flex-wrap: wrap;
 }
-
-/* .skCubeGrid {
-  width: 150px;
-  height: 150px;
-  margin: 100px auto;
-  display: flex;
-  flex-wrap: wrap;
-} */
 
 .skCube {
   width: 33%;
@@ -48,4 +38,13 @@
   35% {
     transform: scale3D(0, 0, 1);
   }
+}
+
+@media (max-width: 426px) {
+  .skCubeGrid {
+  width: 100px;
+  height: 100px;
+  display: flex;
+  flex-wrap: wrap;
+}
 }
